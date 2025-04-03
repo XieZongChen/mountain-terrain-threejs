@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/Addons.js';
 import { onMounted, ref, useTemplateRef } from 'vue';
 
 const contentRef = useTemplateRef('content');
@@ -33,6 +34,8 @@ const initThree = () => {
   // 初始化渲染器
   renderer = new THREE.WebGLRenderer({ canvas: contentRef.value });
   renderer.setSize(width, height);
+
+  const controls = new OrbitControls(camera, renderer.domElement);
 };
 
 const createMesh = () => {
