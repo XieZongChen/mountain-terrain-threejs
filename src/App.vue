@@ -21,8 +21,8 @@ const initThree = () => {
   scene = new THREE.Scene();
 
   // 初始化坐标系
-  const axesHelper = new THREE.AxesHelper(200);
-  scene.add(axesHelper);
+  // const axesHelper = new THREE.AxesHelper(200);
+  // scene.add(axesHelper);
 
   const width = window.innerWidth;
   const height = window.innerHeight;
