@@ -5,43 +5,53 @@ import { onMounted, ref, useTemplateRef } from 'vue';
 const contentRef = useTemplateRef('content');
 onMounted(() => {
   initThree();
+  createMesh();
   animate();
 });
 
 let renderer: THREE.WebGLRenderer | null = null;
 let scene: THREE.Scene | null = null;
 let camera: THREE.PerspectiveCamera | null = null;
-let cube: THREE.Mesh | null = null;
 
 const initThree = () => {
   if (!contentRef.value) return;
-  // 初始化场景、相机和渲染器
+  // 初始化场景
   scene = new THREE.Scene();
-  camera = new THREE.PerspectiveCamera(
-    75,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    1000
-  );
-  camera.position.z = 5;
 
+  // 初始化坐标系
+  const axesHelper = new THREE.AxesHelper(200);
+  scene.add(axesHelper);
+
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+
+  // 初始化相机
+  camera = new THREE.PerspectiveCamera(60, width / height, 1, 10000);
+  camera.position.set(200, 200, 200);
+  camera.lookAt(0, 0, 0);
+
+  // 初始化渲染器
   renderer = new THREE.WebGLRenderer({ canvas: contentRef.value });
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(width, height);
+};
 
-  // 创建一个立方体
-  const geometry = new THREE.BoxGeometry();
-  const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-  cube = new THREE.Mesh(geometry, material);
-  scene.add(cube);
+const createMesh = () => {
+  if (!scene) return;
+  const geometry = new THREE.PlaneGeometry(300, 300, 10, 10);
+
+  const material = new THREE.MeshBasicMaterial({
+    color: new THREE.Color('orange'),
+    wireframe: true,
+  });
+
+  const mesh = new THREE.Mesh(geometry, material);
+  scene.add(mesh);
 };
 
 const animate = () => {
   if (!renderer || !scene || !camera) return;
   requestAnimationFrame(animate);
-  if (cube) {
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
-  }
+
   renderer.render(scene, camera);
 };
 </script>
