@@ -29,7 +29,7 @@ const initThree = () => {
 
   // 初始化相机
   camera = new THREE.PerspectiveCamera(60, width / height, 1, 10000);
-  camera.position.set(200, 200, 200);
+  camera.position.set(450, 150, 100);
   camera.lookAt(0, 0, 0);
 
   // 初始化渲染器
