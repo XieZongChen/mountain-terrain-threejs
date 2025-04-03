@@ -40,6 +40,8 @@ const initThree = () => {
 };
 
 let geometry: THREE.PlaneGeometry;
+// 山脉需要有连续性的随机，而不是这种完全随机，所以需要使用噪声函数
+const noise2D = createNoise2D();
 
 const createMesh = () => {
   if (!scene) return;
@@ -60,9 +62,6 @@ const createMesh = () => {
 const updatePosition = () => {
   const positions = geometry.attributes.position;
 
-  // 山脉需要有连续性的随机，而不是这种完全随机，所以需要使用噪声函数
-  const noise2D = createNoise2D();
-
   for (let i = 0; i < positions.count; i++) {
     // 传入 x、y 让噪音算法算出这个位置的 z
     const x = positions.getX(i);
@@ -74,7 +73,12 @@ const updatePosition = () => {
      */
     const z = noise2D(x / 300, y / 300) * 50;
 
-    // 使用时间来计算正弦，得到的就是一个不断变化的 -1 到 1 的值，制作山脉起伏动画
+    /**
+     * 制作山脉起伏动画
+     * sin 的参数首先是传入时间，因为它是不断变化的，所以传入它就有 -1 到 1 的 sin 曲线变化
+     * 时间加 x 轴坐标是为了让每个点的变化有差异，而不是整体一起变化
+     * 最终结果乘 10 就是 -10 到 10 变化，这样就有 20 的高度波动
+     */
     const sinNum = Math.sin(Date.now() * 0.002 + x * 0.05) * 10;
 
     positions.setZ(i, z + sinNum);
