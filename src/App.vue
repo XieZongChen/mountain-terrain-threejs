@@ -37,7 +37,16 @@ const initThree = () => {
 
 const createMesh = () => {
   if (!scene) return;
+
+  // 创建一个 300 * 300 的平面几何体，宽高分成 10 段
   const geometry = new THREE.PlaneGeometry(300, 300, 10, 10);
+
+  const positions = geometry.attributes.position;
+
+  for (let i = 0; i < positions.count; i++) {
+    // 随机顶点坐标
+    positions.setZ(i, Math.random() * 50);
+  }
 
   const material = new THREE.MeshBasicMaterial({
     color: new THREE.Color('orange'),
@@ -45,6 +54,7 @@ const createMesh = () => {
   });
 
   const mesh = new THREE.Mesh(geometry, material);
+  mesh.rotateX(Math.PI / 2); // 绕 x 轴旋转 90 度
   scene.add(mesh);
 };
 
