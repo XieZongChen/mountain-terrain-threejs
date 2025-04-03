@@ -2,7 +2,7 @@
 import { createNoise2D } from 'simplex-noise';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
-import { onMounted, ref, useTemplateRef } from 'vue';
+import { onMounted, useTemplateRef } from 'vue';
 
 const contentRef = useTemplateRef('content');
 onMounted(() => {
@@ -36,7 +36,7 @@ const initThree = () => {
   renderer = new THREE.WebGLRenderer({ canvas: contentRef.value });
   renderer.setSize(width, height);
 
-  const controls = new OrbitControls(camera, renderer.domElement);
+  new OrbitControls(camera, renderer.domElement);
 };
 
 let geometry: THREE.PlaneGeometry;
